@@ -1,4 +1,5 @@
 from selenium import webdriver
+from time import sleep
 
 import sys
 sys.path.insert(0, '../z-linkedin_info')
@@ -28,9 +29,21 @@ class LinkedInBot():
 
 	def accept_invitations(self):
 		self.driver.get('https://www.linkedin.com/mynetwork/invitation-manager/')
+		
+		while True:
+			try:
+				sleep(0.5)
+				select_all_chkbx = self.driver.find_element_by_id('contact-select-checkbox')
+				#select_all_chkbx.click()
+				self.driver.execute_script("arguments[0].click();", select_all_chkbx)
 
-		#TODO
+				accept_all_btn = self.driver.find_element_by_xpath('//*[@id="ember65"]/div[1]/button[2]')
+				accept_all_btn.click()
+			except:
+				print('All invitations accepted.')
+				break
 
 if __name__ == '__main__':
 	bot = LinkedInBot()
 	bot.login()
+	bot.accept_invitations()
